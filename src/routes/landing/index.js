@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 import axios from 'axios';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { WMATA } from '../keys';
+// import { WMATA } from '../keys';
 
 // User Stories:
 
@@ -20,34 +20,22 @@ import { WMATA } from '../keys';
 /*
   Routes:
   /
-  /train/browse/all
-  /train/browse/:id
+  /browse/trains
+  /browse/trains/:id
   /
 
 
 
 */
 
-class App extends Component {
-  async componentDidMount() {
-    const req = {
-      method: 'get',
-      url: `http://api.wmata.com/trainpositions/trainpositions?contentType=json`,
-      headers: { api_key: `${WMATA.api_key}` }
-    };
-
-    try {
-      const res = await axios(req);
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+class Landing extends Component {
   render() {
-    console.log(WMATA);
-    return <div>hello</div>;
+    return (
+      <div>
+        <Link to="/browse/trains">View all active trains</Link>
+      </div>
+    );
   }
 }
 
-export default App;
+export default Landing;
