@@ -1,12 +1,3 @@
-import React, { Component } from 'react';
-
-import axios from 'axios';
-import { Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import shortid from 'shortid';
-
-import { WMATA } from '../../config';
-
 // User Stories:
 
 // As a user I'd like to be able to see all the trains!
@@ -19,13 +10,6 @@ import { WMATA } from '../../config';
 // As a user I'd like to see the page automatically update as the trains' positions update
 
 /*
-  Routes:
-  /
-  /browse/trains
-  /browse/trains/:id
-  /
-
-
   {
     CarCount: 6
     CircuitId: 2494
@@ -37,10 +21,24 @@ import { WMATA } from '../../config';
     TrainId: "151"
     TrainNumber: "000"
   }
-
-
-
 */
+
+import React, { Component } from 'react';
+
+// COMPONENTS
+import TPcardMin from '../../components/trains/TPcardMin';
+
+// ACTION CREATORS
+import { fetchLiveTP } from '../../actions/appdata/train_positions';
+
+// NPM MODULES
+import axios from 'axios';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import shortid from 'shortid';
+
+// CONFIG
+import { WMATA } from '../../config';
 
 class BrowseTrains extends Component {
   state = {
@@ -48,38 +46,32 @@ class BrowseTrains extends Component {
   };
 
   async componentDidMount() {
-    const { api_key, api } = WMATA;
-    const req = {
-      method: 'get',
-      url: `${api}/trainpositions/trainpositions?contentType=json`,
-      headers: { api_key: `${api_key}` }
-    };
-
-    try {
-      const res = await axios(req);
-      const { TrainPositions } = res.data;
-      this.setState({ TrainPositions });
-      console.log(TrainPositions);
-    } catch (error) {
-      console.log(error);
-    }
+    this.props.fetchLiveTP();
   }
 
   renderTP = trainPosition => {
+    const { TrainId, ServiceType, LineCode } = trainPosition;
     return (
-      <div key={shortid.generate()} className="card">
-        <div className="card-body">
-          <h5 className="card-title">{trainPosition.TrainId}</h5>
-          <div className="card-text">{trainPosition.ServiceType}</div>
-          <div className="card-text">{trainPosition.LineCode}</div>
-        </div>
-      </div>
+      <TPcardMin
+        key={shortid.generate()}
+        TrainId={TrainId}
+        ServiceType={ServiceType}
+        LineCode={LineCode}
+      />
     );
   };
 
   render() {
-    return <div>{this.state.TrainPositions.map(this.renderTP)}</div>;
+    const { TrainPositions } = this.props;
+    return <div>{TrainPositions && TrainPositions.map(this.renderTP)}</div>;
   }
 }
 
-export default BrowseTrains;
+const mapStateToProps = ({ appData }) => {
+  return { TrainPositions: appData.TrainPositions };
+};
+
+export default connect(
+  mapStateToProps,
+  { fetchLiveTP }
+)(BrowseTrains);
