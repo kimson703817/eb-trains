@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 
+// Routes
+import Landing from './routes/landing';
+import BrowseTrains from './routes/browse/BrowseTrains';
+
+// Components
+import Clock from './components/Clock';
+
 // NPM modules
 import axios from 'axios';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-
-// Routes
-import Landing from './routes/landing';
-import BrowseTrains from './routes/browse/BrowseTrains';
 
 import { WMATA } from './config';
 
@@ -37,6 +40,7 @@ class App extends Component {
   render() {
     return (
       <div className="container">
+        <Clock />
         <BrowserRouter>
           <Route exact path="/" component={Landing} />
           <Route exact path="/browse/trains" component={BrowseTrains} />
