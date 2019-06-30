@@ -1,15 +1,5 @@
-// User Stories:
-
-// As a user I'd like to be able to see all the trains!
-// As a user I'd like to be able to filter by train line color.
-// As a user I'd like to be able to filter by different service types.
-// As a user I'd like to be able to filter by car count.
-// As a user I'd like to be able to visually distinguish trains on different colored lines from each other.
-// As a user I'd like to be able to visually distinguish between different car counts.
-// As a user I'd like to be able to distinguish trains by different service types.
-// As a user I'd like to see the page automatically update as the trains' positions update
-
 /*
+  SAMPLE DATA
   {
     CarCount: 6
     CircuitId: 2494
@@ -26,36 +16,53 @@
 import React, { Component } from 'react';
 
 // COMPONENTS
+import DropdownMenu from '../../components/dropdown/DropdownMenu';
 import TPcardMin from '../../components/trains/TPcardMin';
 
 // ACTION CREATORS
 import { fetchLiveTP } from '../../actions/appdata/train_positions';
 
 // NPM MODULES
-import axios from 'axios';
-import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 
-// CONFIG
-import { WMATA } from '../../config';
+// FILTER CATEGORIES.
+/**** NO DOCUMENTATION ON ALL THE POSSIBLE VALUES OF LINECODES AND SERVICE TYPES.
+      PLEASE DOUBLE CHECK SPECIFICATIONS. ****/
+
+const LineCodes = ['all', 'RD', 'BL', 'YL', 'OR', 'GR', 'SV'];
+const ServiceTypes = ['all', 'Normal', 'NoPassengers', 'Special', 'Unknown'];
 
 class BrowseTrains extends Component {
   state = {
-    TrainPositions: []
+    LineCodeFilter: 'all',
+    ServiceTypeFilter: 'all',
+    resultCount: 0
   };
 
   async componentDidMount() {
     this.props.fetchLiveTP();
-    this.timerID = setInterval(this.props.fetchLiveTP, 12000);
+    // this.timerID = setInterval(this.props.fetchLiveTP, 12000);
   }
 
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
 
+  isFiltered = (filter, value) => {
+    if (filter !== value && filter !== 'all') return true;
+    if (filter === value || filter === 'all') return false;
+    return true;
+  };
+
   renderTP = trainPosition => {
     const { TrainId, ServiceType, LineCode } = trainPosition;
+    const { LineCodeFilter, ServiceTypeFilter, resultCount } = this.state;
+    if (
+      this.isFiltered(LineCodeFilter, LineCode) ||
+      this.isFiltered(ServiceTypeFilter, ServiceType)
+    )
+      return;
     return (
       <TPcardMin
         key={shortid.generate()}
@@ -66,9 +73,39 @@ class BrowseTrains extends Component {
     );
   };
 
+  onLineCodeSelect = ({ target }) => {
+    const { value } = target;
+    this.setState({ LineCodeFilter: value });
+  };
+
+  onServiceTypeSelect = ({ target }) => {
+    const { value } = target;
+    this.setState({ ServiceTypeFilter: value });
+  };
+
   render() {
     const { TrainPositions } = this.props;
-    return <div>{TrainPositions && TrainPositions.map(this.renderTP)}</div>;
+    const { LineCodeFilter, ServiceTypeFilter, resultCount } = this.state;
+    return (
+      <div>
+        <DropdownMenu
+          label="Line Color"
+          name="lineCodeFilter"
+          value={LineCodeFilter}
+          onChange={this.onLineCodeSelect}
+          items={LineCodes}
+        />
+        <DropdownMenu
+          label="Service Type"
+          name="serviceTypeFilter"
+          value={ServiceTypeFilter}
+          onChange={this.onServiceTypeSelect}
+          items={ServiceTypes}
+        />
+        {/*<p>{resultCount} results</p>*/}
+        <div>{TrainPositions && TrainPositions.map(this.renderTP)}</div>
+      </div>
+    );
   }
 }
 

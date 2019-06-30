@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 class Clock extends React.Component {
   constructor(props) {
@@ -24,10 +24,10 @@ class Clock extends React.Component {
   render() {
     return (
       <div>
-        <h1>Hello, world!</h1>
-        <h2>
-          It is {this.state.estTime.toLocaleTimeString('en-US', this.options)}.
-        </h2>
+        <h6>
+          It is {this.state.estTime.toLocaleTimeString('en-US', this.options)}{' '}
+          in Washington DC.
+        </h6>
       </div>
     );
   }

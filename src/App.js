@@ -8,32 +8,13 @@ import BrowseTrains from './routes/browse/BrowseTrains';
 import Clock from './components/Clock';
 
 // NPM modules
-import axios from 'axios';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-
-import { WMATA } from './config';
-
-// User Stories:
-
-// As a user I'd like to be able to see all the trains!
-// As a user I'd like to be able to filter by train line color.
-// As a user I'd like to be able to filter by different service types.
-// As a user I'd like to be able to filter by car count.
-// As a user I'd like to be able to visually distinguish trains on different colored lines from each other.
-// As a user I'd like to be able to visually distinguish between different car counts.
-// As a user I'd like to be able to distinguish trains by different service types.
-// As a user I'd like to see the page automatically update as the trains' positions update
 
 /*
   Routes:
   /
   /browse/trains
   /browse/trains/:id
-  /
-
-
-
 */
 
 class App extends Component {
@@ -51,3 +32,14 @@ class App extends Component {
 }
 
 export default App;
+
+// User Stories:
+
+// As a user I'd like to be able to see all the trains!
+// As a user I'd like to be able to filter by train line color.
+// As a user I'd like to be able to filter by different service types.
+// As a user I'd like to be able to filter by car count.
+// As a user I'd like to be able to visually distinguish trains on different colored lines from each other.
+// As a user I'd like to be able to visually distinguish between different car counts.
+// As a user I'd like to be able to distinguish trains by different service types.
+// As a user I'd like to see the page automatically update as the trains' positions update

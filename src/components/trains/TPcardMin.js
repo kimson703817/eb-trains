@@ -2,7 +2,6 @@
   API call: https://api.wmata.com/TrainPositions/TrainPositions?contentType={contentType}
 ****/
 
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
 
 class TPcardMin extends Component {
