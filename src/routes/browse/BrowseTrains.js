@@ -36,8 +36,7 @@ const ServiceTypes = ['all', 'Normal', 'NoPassengers', 'Special', 'Unknown'];
 class BrowseTrains extends Component {
   state = {
     LineCodeFilter: 'all',
-    ServiceTypeFilter: 'all',
-    resultCount: 0
+    ServiceTypeFilter: 'all'
   };
 
   async componentDidMount() {
@@ -55,9 +54,38 @@ class BrowseTrains extends Component {
     return true;
   };
 
+  applyFilter = trainPosition => {
+    const { LineCodeFilter, ServiceTypeFilter } = this.state;
+    const { LineCode, ServiceType } = trainPosition;
+
+    if (
+      (LineCodeFilter !== LineCode && LineCodeFilter !== 'all') ||
+      (ServiceTypeFilter !== ServiceType && ServiceTypeFilter !== 'all')
+    )
+      return false;
+    if (
+      (LineCodeFilter === LineCode || LineCodeFilter === 'all') &&
+      (ServiceTypeFilter === ServiceType || ServiceTypeFilter === 'all')
+    )
+      return true;
+    return false;
+  };
+
   renderTP = trainPosition => {
     const { TrainId, ServiceType, LineCode } = trainPosition;
-    const { LineCodeFilter, ServiceTypeFilter, resultCount } = this.state;
+    return (
+      <TPcardMin
+        key={shortid.generate()}
+        TrainId={TrainId}
+        ServiceType={ServiceType}
+        LineCode={LineCode}
+      />
+    );
+  };
+
+  renderTPv2 = trainPosition => {
+    const { TrainId, ServiceType, LineCode } = trainPosition;
+    const { LineCodeFilter, ServiceTypeFilter } = this.state;
     if (
       this.isFiltered(LineCodeFilter, LineCode) ||
       this.isFiltered(ServiceTypeFilter, ServiceType)
@@ -84,7 +112,7 @@ class BrowseTrains extends Component {
   };
 
   renderFilters = () => {
-    const { LineCodeFilter, ServiceTypeFilter, resultCount } = this.state;
+    const { LineCodeFilter, ServiceTypeFilter } = this.state;
     return (
       <div
         style={{ textAlign: 'center', margin: '0.7rem 1rem' }}
@@ -117,13 +145,14 @@ class BrowseTrains extends Component {
 
   render() {
     const { TrainPositions } = this.props;
+    const filtered = TrainPositions
+      ? TrainPositions.filter(this.applyFilter)
+      : [];
     return (
       <div>
         {this.renderFilters()}
-        {/*<p>{resultCount} results</p>*/}
-        <div className="row">
-          {TrainPositions && TrainPositions.map(this.renderTP)}
-        </div>
+        <p>{filtered.length} results</p>
+        <div className="row">{filtered.map(this.renderTP)}</div>
       </div>
     );
   }
