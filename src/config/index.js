@@ -2,8 +2,7 @@ const keys = require('./keys');
 
 module.exports = {
   WMATA: {
-    api: 'https://api.wmata.com',
-    api_key: keys.WMATA.api_key
+    api: 'https://api.wmata.com'
   },
   homeURL:
     process.env.NODE_ENV === 'production'
