@@ -83,27 +83,47 @@ class BrowseTrains extends Component {
     this.setState({ ServiceTypeFilter: value });
   };
 
-  render() {
-    const { TrainPositions } = this.props;
+  renderFilters = () => {
     const { LineCodeFilter, ServiceTypeFilter, resultCount } = this.state;
     return (
-      <div>
+      <div
+        style={{ textAlign: 'center', margin: '0.7rem 1rem' }}
+        className="row"
+      >
+        <h5 style={{ paddingTop: '2.4rem' }} className="col-sm-1">
+          Filters
+        </h5>
+        <div className="col-sm-1" />
         <DropdownMenu
+          className="col-sm-2"
           label="Line Color"
           name="lineCodeFilter"
           value={LineCodeFilter}
           onChange={this.onLineCodeSelect}
           items={LineCodes}
         />
+        <div className="col-sm-1" />
         <DropdownMenu
+          className="col-sm-2"
           label="Service Type"
           name="serviceTypeFilter"
           value={ServiceTypeFilter}
           onChange={this.onServiceTypeSelect}
           items={ServiceTypes}
         />
+      </div>
+    );
+  };
+
+  render() {
+    const { TrainPositions } = this.props;
+    return (
+      <div>
+        {this.renderFilters()}
         {/*<p>{resultCount} results</p>*/}
-        <div>{TrainPositions && TrainPositions.map(this.renderTP)}</div>
+        <div className="row">
+          {TrainPositions && TrainPositions.map(this.renderTP)}
+        </div>
       </div>
     );
   }

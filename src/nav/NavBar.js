@@ -8,6 +8,7 @@ import { homeURL } from '../config';
 
 // NPM MODULE
 import { NavLink } from 'react-router-dom';
+import shortid from 'shortid';
 
 // APP NAVIGATION ROUTES
 const links = [
@@ -43,6 +44,7 @@ class NavBar extends Component {
       <img
         style={{ height: '2.1rem', width: 'auto' }}
         src="https://www.energybox.com/wp-content/uploads/energybox_logo-1.svg"
+        alt="app-logo"
       />
     </a>
   );
@@ -60,7 +62,7 @@ class NavBar extends Component {
   );
 
   renderNavLink = link => (
-    <li className="nav-item">
+    <li key={shortid.generate()} className="nav-item">
       <NavLink className="nav-link" to={link.to} activeClassName="active">
         {link.routeName}
       </NavLink>

@@ -4,10 +4,10 @@ import shortid from 'shortid';
 class DropdownMenu extends Component {
   render() {
     const id = shortid.generate();
-    const { name, value, onChange, items } = this.props;
+    const { name, label, value, items, onChange, className } = this.props;
     return (
-      <div>
-        <label htmlFor={id}>{this.props.label}</label>
+      <div className={className}>
+        <label htmlFor={id}>{label}</label>
         <select
           id={id}
           className="form-control"
