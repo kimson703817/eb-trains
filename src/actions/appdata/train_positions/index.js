@@ -2,15 +2,12 @@ import { FETCH_LIVE_TP } from './actionTypes';
 
 // KEYS AND CONFIGS
 import { WMATA } from '../../../config';
-import keys from '../../../config/keys';
 
 // NPM MODULES
 import axios from 'axios';
 
 export const fetchLiveTP = () => async dispatch => {
-  const { api } = WMATA;
-  const { api_key } = keys.WMATA;
-  console.log(process.env);
+  const { api_key, api } = WMATA;
   const req = {
     method: 'get',
     url: `${api}/trainpositions/trainpositions?contentType=json`,

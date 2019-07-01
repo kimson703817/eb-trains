@@ -2,7 +2,7 @@ if (process.env.NODE_ENV === 'production') {
   // return production keys
   module.exports = {
     WMATA: {
-      api_key: process.env.WMATA_API_KEY
+      api_key: process.env.REACT_APP_WMATA_API_KEY
     }
   };
 } else {
