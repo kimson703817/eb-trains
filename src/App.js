@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-// Routes
+// ROUTES
 import Landing from './routes/landing';
 import BrowseTrains from './routes/browse/BrowseTrains';
 
-// Components
-import Clock from './components/Clock';
+// NAV
+import NavBar from './nav/NavBar';
 
 // NPM modules
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -20,11 +20,13 @@ import { BrowserRouter, Route } from 'react-router-dom';
 class App extends Component {
   render() {
     return (
-      <div className="container">
-        <Clock />
+      <div>
         <BrowserRouter>
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/browse/trains" component={BrowseTrains} />
+          <NavBar />
+          <div className="container">
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/browse/trains" component={BrowseTrains} />
+          </div>
         </BrowserRouter>
       </div>
     );

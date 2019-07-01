@@ -6,7 +6,7 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        <Link to="/browse/trains">View all active trains</Link>
+        <Link to="/browse/trains">Train Tracker</Link>
       </div>
     );
   }

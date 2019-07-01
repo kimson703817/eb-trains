@@ -25,8 +25,7 @@ class Clock extends React.Component {
     return (
       <div>
         <h6>
-          It is {this.state.estTime.toLocaleTimeString('en-US', this.options)}{' '}
-          in Washington DC.
+          {this.state.estTime.toLocaleTimeString('en-US', this.options)} (EST)
         </h6>
       </div>
     );
