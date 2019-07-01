@@ -10,6 +10,7 @@ import axios from 'axios';
 export const fetchLiveTP = () => async dispatch => {
   const { api } = WMATA;
   const { api_key } = keys.WMATA;
+  console.log(api_key);
   const req = {
     method: 'get',
     url: `${api}/trainpositions/trainpositions?contentType=json`,
