@@ -7,6 +7,6 @@ module.exports = {
   },
   homeURL:
     process.env.NODE_ENV === 'production'
-      ? process.env.homeURL
+      ? process.env.HOMEURL
       : 'http://127.0.0.1:3000'
 };
