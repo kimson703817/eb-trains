@@ -7,6 +7,6 @@ if (process.env.NODE_ENV === 'production') {
   };
 } else {
   // return dev keys
-  console.log(process.env.NODE_ENV);
+  console.log(process.env);
   module.exports = require('./dev');
 }
