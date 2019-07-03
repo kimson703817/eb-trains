@@ -36,21 +36,27 @@ class TrainPositions extends Component {
   };
 
   applyCarCountFilter = CarCount => {
-    const { FilterCarCount } = this.props.filters;
+    const { FilterCarCount, FilterCarCountSign } = this.props.filters;
     if (FilterCarCount === null || isNaN(FilterCarCount)) return true;
 
-    if (FilterCarCount === CarCount) return true;
-    return false;
+    switch (FilterCarCountSign) {
+      case 'equals':
+        return CarCount === FilterCarCount;
+      case 'less than':
+        return CarCount < FilterCarCount;
+      case 'greater than':
+        return CarCount > FilterCarCount;
+      default:
+        return false;
+    }
   };
 
   renderTP = trainPosition => {
-    const { TrainId, ServiceType, LineCode } = trainPosition;
     return <TPcard key={shortid.generate()} {...trainPosition} />;
   };
 
   render() {
     const { TrainPositions } = this.props;
-    const { FilterCarCount } = this.props.filters;
     let filtered = TrainPositions
       ? TrainPositions.filter(this.applyFilters)
       : [];

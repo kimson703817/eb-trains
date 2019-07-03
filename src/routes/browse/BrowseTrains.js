@@ -24,14 +24,14 @@ import { fetchLiveTP } from '../../actions/appdata/train_positions';
 
 // NPM MODULES
 import { connect } from 'react-redux';
-import shortid from 'shortid';
 
 class BrowseTrains extends Component {
   state = {
     filters: {
       FilterLineCode: 'all',
       FilterServiceType: 'all',
-      FilterCarCount: null
+      FilterCarCount: null,
+      FilterCarCountSign: 'equals'
     }
   };
 

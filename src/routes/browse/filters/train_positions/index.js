@@ -28,11 +28,19 @@ class TrainPositionsFilter extends Component {
     this.props.onChange(newFilters);
   };
 
+  onCarCountFilterSignChange = ({ target }) => {
+    const { value } = target;
+    const { filters } = this.props;
+    const newFilters = { ...filters, FilterCarCountSign: value };
+    this.props.onChange(newFilters);
+  };
+
   render() {
     const {
       FilterLineCode,
       FilterServiceType,
-      FilterCarCount
+      FilterCarCount,
+      FilterCarCountSign
     } = this.props.filters;
     const carCountToggled = FilterCarCount !== null;
     return (
@@ -55,10 +63,12 @@ class TrainPositionsFilter extends Component {
           onChange={this.onServiceTypeFilter}
         />
         <CarCountFilter
-          className="col-sm-2"
-          value={carCountToggled ? FilterCarCount : 0}
+          className="col-sm-4"
           onToggle={this.props.onCarCountFilterToggle}
-          onChange={this.onCarCountFilter}
+          value={carCountToggled ? FilterCarCount : 0}
+          onValueChange={this.onCarCountFilter}
+          compareSign={FilterCarCountSign}
+          onSignChange={this.onCarCountFilterSignChange}
           disabled={!carCountToggled && true}
         />
       </div>
