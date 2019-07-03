@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 // COMPONENTS
+import CarCountFilter from './CarCountFilter';
 import LineCodeFilter from './LineCodeFilter';
 import ServiceTypeFilter from './ServiceTypeFilter';
 
@@ -19,8 +20,21 @@ class TrainPositionsFilter extends Component {
     this.props.onChange(newFilters);
   };
 
+  onCarCountFilter = ({ target }) => {
+    const { value } = target;
+    const number = parseInt(value);
+    const { filters } = this.props;
+    const newFilters = { ...filters, FilterCarCount: number };
+    this.props.onChange(newFilters);
+  };
+
   render() {
-    const { FilterLineCode, FilterServiceType } = this.props.filters;
+    const {
+      FilterLineCode,
+      FilterServiceType,
+      FilterCarCount
+    } = this.props.filters;
+    const carCountToggled = FilterCarCount !== null;
     return (
       <div
         style={{ textAlign: 'center', margin: '0.7rem 1rem' }}
@@ -35,11 +49,17 @@ class TrainPositionsFilter extends Component {
           value={FilterLineCode}
           onChange={this.onLineCodeFilter}
         />
-        <div className="col-sm-1" />
         <ServiceTypeFilter
           className="col-sm-2"
           value={FilterServiceType}
           onChange={this.onServiceTypeFilter}
+        />
+        <CarCountFilter
+          className="col-sm-2"
+          value={carCountToggled ? FilterCarCount : 0}
+          onToggle={this.props.onCarCountFilterToggle}
+          onChange={this.onCarCountFilter}
+          disabled={!carCountToggled && true}
         />
       </div>
     );

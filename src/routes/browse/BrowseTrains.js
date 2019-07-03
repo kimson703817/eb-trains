@@ -28,11 +28,22 @@ import shortid from 'shortid';
 
 class BrowseTrains extends Component {
   state = {
-    filters: { FilterLineCode: 'all', FilterServiceType: 'all' }
+    filters: {
+      FilterLineCode: 'all',
+      FilterServiceType: 'all',
+      FilterCarCount: null
+    }
   };
 
   onFiltersChange = filters => {
     this.setState({ filters });
+  };
+
+  onCarCountFilterToggle = () => {
+    const { filters } = this.state;
+    const FilterCarCount = filters.FilterCarCount === null ? 0 : null;
+    const newFilters = { ...filters, FilterCarCount };
+    this.setState({ filters: newFilters });
   };
 
   render() {
@@ -42,6 +53,7 @@ class BrowseTrains extends Component {
         <TrainPositionsFilter
           filters={filters}
           onChange={this.onFiltersChange}
+          onCarCountFilterToggle={this.onCarCountFilterToggle}
         />
         <TrainPositions {...this.props} filters={filters} />
       </div>

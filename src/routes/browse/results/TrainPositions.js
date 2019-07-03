@@ -17,15 +17,10 @@ class TrainPositions extends Component {
     // clearInterval(this.timerID);
   }
 
-  isFiltered = (filter, value) => {
-    if (filter !== value && filter !== 'all') return true;
-    if (filter === value || filter === 'all') return false;
-    return true;
-  };
-
-  applyFilter = trainPosition => {
+  applyFilters = trainPosition => {
     const { FilterLineCode, FilterServiceType } = this.props.filters;
     const { LineCode, ServiceType } = trainPosition;
+    const CarCount = parseInt(trainPosition.CarCount, 10);
 
     if (
       (FilterLineCode !== LineCode && FilterLineCode !== 'all') ||
@@ -36,7 +31,15 @@ class TrainPositions extends Component {
       (FilterLineCode === LineCode || FilterLineCode === 'all') &&
       (FilterServiceType === ServiceType || FilterServiceType === 'all')
     )
-      return true;
+      if (this.applyCarCountFilter(CarCount)) return true;
+    return false;
+  };
+
+  applyCarCountFilter = CarCount => {
+    const { FilterCarCount } = this.props.filters;
+    if (FilterCarCount === null || isNaN(FilterCarCount)) return true;
+
+    if (FilterCarCount === CarCount) return true;
     return false;
   };
 
@@ -47,8 +50,9 @@ class TrainPositions extends Component {
 
   render() {
     const { TrainPositions } = this.props;
-    const filtered = TrainPositions
-      ? TrainPositions.filter(this.applyFilter)
+    const { FilterCarCount } = this.props.filters;
+    let filtered = TrainPositions
+      ? TrainPositions.filter(this.applyFilters)
       : [];
     return (
       <div>
