@@ -35,6 +35,13 @@ class TrainPositionsFilter extends Component {
     this.props.onChange(newFilters);
   };
 
+  onCarCountFilterToggle = () => {
+    const { filters } = this.props;
+    const FilterCarCount = filters.FilterCarCount === null ? 0 : null;
+    const newFilters = { ...filters, FilterCarCount };
+    this.props.onChange(newFilters);
+  };
+
   render() {
     const {
       FilterLineCode,
@@ -64,7 +71,7 @@ class TrainPositionsFilter extends Component {
         />
         <CarCountFilter
           className="col-sm-4"
-          onToggle={this.props.onCarCountFilterToggle}
+          onToggle={this.onCarCountFilterToggle}
           value={carCountToggled ? FilterCarCount : 0}
           onValueChange={this.onCarCountFilter}
           compareSign={FilterCarCountSign}

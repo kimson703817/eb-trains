@@ -39,13 +39,6 @@ class BrowseTrains extends Component {
     this.setState({ filters });
   };
 
-  onCarCountFilterToggle = () => {
-    const { filters } = this.state;
-    const FilterCarCount = filters.FilterCarCount === null ? 0 : null;
-    const newFilters = { ...filters, FilterCarCount };
-    this.setState({ filters: newFilters });
-  };
-
   render() {
     const { filters } = this.state;
     return (
@@ -53,7 +46,6 @@ class BrowseTrains extends Component {
         <TrainPositionsFilter
           filters={filters}
           onChange={this.onFiltersChange}
-          onCarCountFilterToggle={this.onCarCountFilterToggle}
         />
         <TrainPositions {...this.props} filters={filters} />
       </div>
