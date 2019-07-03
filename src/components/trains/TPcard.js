@@ -32,7 +32,14 @@ const formatTime = time => {
 };
 
 const TPcard = props => {
-  const { TrainId, ServiceType, LineCode, SecondsAtLocation, CarCount } = props;
+  const {
+    TrainId,
+    TrainNumber,
+    ServiceType,
+    LineCode,
+    SecondsAtLocation,
+    CarCount
+  } = props;
   const color = LineCode ? colors[LineCode].color : null;
   const backgroundColor = LineCode ? colors[LineCode].backgroundColor : null;
 
@@ -72,6 +79,9 @@ const TPcard = props => {
           </div>
         </div>
         <div style={{ fontSize: '1.1rem' }}>
+          <div className="card-text">
+            <b>Train Number:</b> {TrainNumber}
+          </div>
           <div className="card-text">
             <b>Service Type:</b> {ServiceType}
           </div>
