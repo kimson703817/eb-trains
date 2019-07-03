@@ -1,74 +1,10 @@
 import React, { Component } from 'react';
 
 // Components
-import Clock from '../components/Clock';
-
-// CONFIG
-import { homeURL } from '../config';
-
-// NPM MODULE
-import { NavLink } from 'react-router-dom';
-import shortid from 'shortid';
-
-// APP NAVIGATION ROUTES
-const links = [
-  {
-    routeName: 'Train Tracker',
-    to: '/browse/trains'
-  },
-  {
-    routeName: 'Technology',
-    to: '/technology'
-  },
-  {
-    routeName: 'Company',
-    to: '/company'
-  },
-  {
-    routeName: 'Contact Us',
-    to: '/contact'
-  }
-];
+import InfoNav from './InfoNav';
+import SiteNav from './SiteNav';
 
 class NavBar extends Component {
-  renderInfo = () => (
-    <nav className="navbar navbar-expand-md navbar-light">
-      {this.renderLogo()}
-      <div className="col-sm-6" />
-      <Clock className="col-sm-2" />
-    </nav>
-  );
-
-  renderLogo = () => (
-    <a className="col-sm-3" href={homeURL} rel="home">
-      <img
-        style={{ height: '2.1rem', width: 'auto' }}
-        src="https://www.energybox.com/wp-content/uploads/energybox_logo-1.svg"
-        alt="app-logo"
-      />
-    </a>
-  );
-
-  renderNav = () => (
-    <div
-      style={{ height: '1rem', fontSize: '0.98rem' }}
-      className="navbar navbar-expand-md navbar-light"
-    >
-      <div className="col-sm-6" />
-      <div className="col-sm-6">
-        <ul className="navbar-nav mx-auto">{links.map(this.renderNavLink)}</ul>
-      </div>
-    </div>
-  );
-
-  renderNavLink = link => (
-    <li key={shortid.generate()} className="nav-item">
-      <NavLink className="nav-link" to={link.to} activeClassName="active">
-        {link.routeName}
-      </NavLink>
-    </li>
-  );
-
   render() {
     return (
       <div
@@ -78,8 +14,8 @@ class NavBar extends Component {
         }}
       >
         <div className="container">
-          {this.renderInfo()}
-          {this.renderNav()}
+          <InfoNav />
+          <SiteNav />
         </div>
       </div>
     );

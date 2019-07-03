@@ -16,8 +16,8 @@
 import React, { Component } from 'react';
 
 // COMPONENTS
-import DropdownMenu from '../../components/dropdown/DropdownMenu';
-import TPcardMin from '../../components/trains/TPcardMin';
+import TrainPositions from './results/TrainPositions';
+import TrainPositionsFilter from './filters/train_positions';
 
 // ACTION CREATORS
 import { fetchLiveTP } from '../../actions/appdata/train_positions';
@@ -26,133 +26,24 @@ import { fetchLiveTP } from '../../actions/appdata/train_positions';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 
-// FILTER CATEGORIES.
-/**** NO DOCUMENTATION ON ALL THE POSSIBLE VALUES OF LINECODES AND SERVICE TYPES.
-      PLEASE DOUBLE CHECK SPECIFICATIONS. ****/
-
-const LineCodes = ['all', 'RD', 'BL', 'YL', 'OR', 'GR', 'SV'];
-const ServiceTypes = ['all', 'Normal', 'NoPassengers', 'Special', 'Unknown'];
-
 class BrowseTrains extends Component {
   state = {
-    LineCodeFilter: 'all',
-    ServiceTypeFilter: 'all'
+    filters: { FilterLineCode: 'all', FilterServiceType: 'all' }
   };
 
-  async componentDidMount() {
-    this.props.fetchLiveTP();
-    // this.timerID = setInterval(this.props.fetchLiveTP, 12000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  isFiltered = (filter, value) => {
-    if (filter !== value && filter !== 'all') return true;
-    if (filter === value || filter === 'all') return false;
-    return true;
-  };
-
-  applyFilter = trainPosition => {
-    const { LineCodeFilter, ServiceTypeFilter } = this.state;
-    const { LineCode, ServiceType } = trainPosition;
-
-    if (
-      (LineCodeFilter !== LineCode && LineCodeFilter !== 'all') ||
-      (ServiceTypeFilter !== ServiceType && ServiceTypeFilter !== 'all')
-    )
-      return false;
-    if (
-      (LineCodeFilter === LineCode || LineCodeFilter === 'all') &&
-      (ServiceTypeFilter === ServiceType || ServiceTypeFilter === 'all')
-    )
-      return true;
-    return false;
-  };
-
-  renderTP = trainPosition => {
-    const { TrainId, ServiceType, LineCode } = trainPosition;
-    return (
-      <TPcardMin
-        key={shortid.generate()}
-        TrainId={TrainId}
-        ServiceType={ServiceType}
-        LineCode={LineCode}
-      />
-    );
-  };
-
-  renderTPv2 = trainPosition => {
-    const { TrainId, ServiceType, LineCode } = trainPosition;
-    const { LineCodeFilter, ServiceTypeFilter } = this.state;
-    if (
-      this.isFiltered(LineCodeFilter, LineCode) ||
-      this.isFiltered(ServiceTypeFilter, ServiceType)
-    )
-      return;
-    return (
-      <TPcardMin
-        key={shortid.generate()}
-        TrainId={TrainId}
-        ServiceType={ServiceType}
-        LineCode={LineCode}
-      />
-    );
-  };
-
-  onLineCodeSelect = ({ target }) => {
-    const { value } = target;
-    this.setState({ LineCodeFilter: value });
-  };
-
-  onServiceTypeSelect = ({ target }) => {
-    const { value } = target;
-    this.setState({ ServiceTypeFilter: value });
-  };
-
-  renderFilters = () => {
-    const { LineCodeFilter, ServiceTypeFilter } = this.state;
-    return (
-      <div
-        style={{ textAlign: 'center', margin: '0.7rem 1rem' }}
-        className="row"
-      >
-        <h5 style={{ paddingTop: '2.4rem' }} className="col-sm-1">
-          Filters
-        </h5>
-        <div className="col-sm-1" />
-        <DropdownMenu
-          className="col-sm-2"
-          label="Line Color"
-          name="lineCodeFilter"
-          value={LineCodeFilter}
-          onChange={this.onLineCodeSelect}
-          items={LineCodes}
-        />
-        <div className="col-sm-1" />
-        <DropdownMenu
-          className="col-sm-2"
-          label="Service Type"
-          name="serviceTypeFilter"
-          value={ServiceTypeFilter}
-          onChange={this.onServiceTypeSelect}
-          items={ServiceTypes}
-        />
-      </div>
-    );
+  onFiltersChange = filters => {
+    this.setState({ filters });
   };
 
   render() {
-    const { TrainPositions } = this.props;
-    const filtered = TrainPositions
-      ? TrainPositions.filter(this.applyFilter)
-      : [];
+    const { filters } = this.state;
     return (
       <div>
-        {this.renderFilters()}
-        <p>{filtered.length} results</p>
-        <div className="row">{filtered.map(this.renderTP)}</div>
+        <TrainPositionsFilter
+          filters={filters}
+          onChange={this.onFiltersChange}
+        />
+        <TrainPositions {...this.props} filters={filters} />
       </div>
     );
   }
