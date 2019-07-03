@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 // COMPONENTS
-import TPcardMin from '../../../components/trains/TPcardMin';
+// import TPcardMin from '../../../components/trains/TPcardMin';
+import TPcard from '../../../components/trains/TPcard';
 
 // NPM MODULES
 import shortid from 'shortid';
@@ -41,14 +42,7 @@ class TrainPositions extends Component {
 
   renderTP = trainPosition => {
     const { TrainId, ServiceType, LineCode } = trainPosition;
-    return (
-      <TPcardMin
-        key={shortid.generate()}
-        TrainId={TrainId}
-        ServiceType={ServiceType}
-        LineCode={LineCode}
-      />
-    );
+    return <TPcard key={shortid.generate()} {...trainPosition} />;
   };
 
   render() {
