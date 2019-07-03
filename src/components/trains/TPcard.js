@@ -40,12 +40,9 @@ class TPcard extends Component {
     const { SecondsAtLocation } = this.props;
     const oldSecs = SecondsAtLocation;
     this.setState({ oldSecs });
-    // console.log(oldSecs);
   }
 
-  // 2
   componentDidUpdate(prevProp, prevState) {
-    // const secsAtLocation = this.props.SecondsAtLocation;
     if (prevProp === null) return;
     const oldSecs = prevProp.SecondsAtLocation;
     if (oldSecs === prevState.oldSecs) return;
