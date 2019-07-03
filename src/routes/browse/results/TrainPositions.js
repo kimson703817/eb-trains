@@ -10,11 +10,11 @@ import shortid from 'shortid';
 class TrainPositions extends Component {
   async componentDidMount() {
     this.props.fetchLiveTP();
-    // this.timerID = setInterval(this.props.fetchLiveTP, 12000);
+    this.timerID = setInterval(this.props.fetchLiveTP, 60000);
   }
 
   componentWillUnmount() {
-    // clearInterval(this.timerID);
+    clearInterval(this.timerID);
   }
 
   applyFilters = trainPosition => {
