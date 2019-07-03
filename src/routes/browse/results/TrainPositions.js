@@ -5,12 +5,11 @@ import React, { Component } from 'react';
 import TPcard from '../../../components/trains/TPcard';
 
 // NPM MODULES
-import shortid from 'shortid';
 
 class TrainPositions extends Component {
   async componentDidMount() {
     this.props.fetchLiveTP();
-    this.timerID = setInterval(this.props.fetchLiveTP, 60000);
+    this.timerID = setInterval(this.props.fetchLiveTP, 12000);
   }
 
   componentWillUnmount() {
@@ -52,7 +51,7 @@ class TrainPositions extends Component {
   };
 
   renderTP = trainPosition => {
-    return <TPcard key={shortid.generate()} {...trainPosition} />;
+    return <TPcard key={trainPosition.TrainId} {...trainPosition} />;
   };
 
   render() {

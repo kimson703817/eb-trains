@@ -2,7 +2,7 @@
   API call: https://api.wmata.com/TrainPositions/TrainPositions?contentType={contentType}
 ****/
 
-import React from 'react';
+import React, { Component } from 'react';
 
 const colors = {
   RD: { color: 'white', backgroundColor: 'red' },
@@ -31,71 +31,97 @@ const formatTime = time => {
   return ret;
 };
 
-const TPcard = props => {
-  const {
-    TrainId,
-    TrainNumber,
-    ServiceType,
-    LineCode,
-    SecondsAtLocation,
-    CarCount
-  } = props;
-  const color = LineCode ? colors[LineCode].color : null;
-  const backgroundColor = LineCode ? colors[LineCode].backgroundColor : null;
+class TPcard extends Component {
+  state = {
+    oldSecs: null
+  };
 
-  return (
-    <div
-      style={{
-        width: '20rem',
-        margin: '1rem',
-        borderColor: 'black'
-      }}
-      className="card"
-    >
-      <div className="card-body">
-        <div className="card-title">
-          <div className="row">
-            <h5 className="col-sm-5">
-              <b>Train ID:</b> {TrainId}
-            </h5>
-            <span className="col-sm-4" />
-            {LineCode ? (
-              <span
-                style={{
-                  color,
-                  backgroundColor,
-                  width: '1.45rem',
-                  height: '1.47rem'
-                }}
-                className="card-text col-sm-2"
-              >
-                {LineCode}
-              </span>
-            ) : (
-              <span>
-                <span className="card-text col">(Not in service)</span>
-              </span>
-            )}
-          </div>
-        </div>
-        <div style={{ fontSize: '1.1rem' }}>
-          <div className="card-text">
-            <b>Train Number:</b> {TrainNumber}
-          </div>
-          <div className="card-text">
-            <b>Service Type:</b> {ServiceType}
-          </div>
-          <div className="card-text">
-            <b>Car Count:</b> {CarCount}
-          </div>
+  componentDidMount() {
+    const { SecondsAtLocation } = this.props;
+    const oldSecs = SecondsAtLocation;
+    this.setState({ oldSecs });
+    // console.log(oldSecs);
+  }
 
-          <div className="card-text">
-            <b>Time at Location:</b> {formatTime(SecondsAtLocation)}
+  // 2
+  componentDidUpdate(prevProp, prevState) {
+    // const secsAtLocation = this.props.SecondsAtLocation;
+    if (prevProp === null) return;
+    const oldSecs = prevProp.SecondsAtLocation;
+    if (oldSecs === prevState.oldSecs) return;
+
+    this.setState({ oldSecs });
+  }
+
+  render() {
+    const {
+      TrainId,
+      TrainNumber,
+      ServiceType,
+      LineCode,
+      SecondsAtLocation,
+      CarCount
+    } = this.props;
+    const { oldSecs } = this.state;
+    // console.log(oldSecs);
+    const color = LineCode ? colors[LineCode].color : null;
+    const backgroundColor = LineCode ? colors[LineCode].backgroundColor : null;
+
+    return (
+      <div
+        style={{
+          width: '20rem',
+          margin: '1rem',
+          borderColor: 'black'
+        }}
+        className="card"
+      >
+        <div className="card-body">
+          <div className="card-title">
+            <div className="row">
+              <h5 className="col-sm-5">
+                <b>Train ID:</b> {TrainId}
+              </h5>
+              <span className="col-sm-4" />
+              {LineCode ? (
+                <span
+                  style={{
+                    color,
+                    backgroundColor,
+                    width: '1.45rem',
+                    height: '1.47rem'
+                  }}
+                  className="card-text col-sm-2"
+                >
+                  {LineCode}
+                </span>
+              ) : (
+                <span>
+                  <span className="card-text col">(Not in service)</span>
+                </span>
+              )}
+            </div>
+          </div>
+          <div style={{ fontSize: '1.1rem' }}>
+            <div className="card-text">
+              <b>Train Number:</b> {TrainNumber}
+            </div>
+            <div className="card-text">
+              <b>Service Type:</b> {ServiceType}
+            </div>
+            <div className="card-text">
+              <b>Car Count:</b> {CarCount}
+            </div>
+
+            <div className="card-text">
+              <b>Time at Location:</b> {formatTime(SecondsAtLocation)} (
+              {oldSecs})
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default TPcard;
