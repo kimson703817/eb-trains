@@ -3,13 +3,18 @@ import React, { Component } from 'react';
 // COMPONENTS
 // import TPcardMin from '../../../components/trains/TPcardMin';
 import TPcard from '../../../components/trains/TPcard';
+import Paginate from '../../../components/browse/Paginate';
 
 // NPM MODULES
 
 class TrainPositions extends Component {
+  state = {
+    currentPage: 1
+  };
+
   async componentDidMount() {
     this.props.fetchLiveTP();
-    this.timerID = setInterval(this.props.fetchLiveTP, 12000);
+    this.timerID = setInterval(this.props.fetchLiveTP, 60000);
   }
 
   componentWillUnmount() {
@@ -62,6 +67,7 @@ class TrainPositions extends Component {
     return (
       <div>
         <p>{filtered.length} results</p>
+        <Paginate items={filtered} itemsPerPage={6} />
         <div className="row">{filtered.map(this.renderTP)}</div>
       </div>
     );
