@@ -19,7 +19,32 @@ class Paginate extends Component {
 
   componentWillUnmount() {}
 
-  onPageNumberClick = () => {};
+  onPageNumberClick = ({ target }) => {
+    const activePage = parseInt(target.getAttribute('pagenumber'));
+    this.setState({ activePage });
+  };
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.items !== this.props.items) {
+  //     console.log(prevProps.items);
+  //     console.log(this.props.items);
+  //     this.setState({ activePage: 1 });
+  //     return;
+  //   }
+  // }
+
+  renderPageTab = (page, className) => (
+    <li key={`paginateKey${page}`} className={className}>
+      <a
+        className="page-link"
+        href={`#${page}`}
+        onClick={this.onPageNumberClick}
+        pagenumber={page}
+      >
+        {page}
+      </a>
+    </li>
+  );
 
   renderPageNumbers = pageCounts => {
     const hrefLink = '#';
@@ -28,26 +53,10 @@ class Paginate extends Component {
 
     for (let page = 1; page <= pageCounts; ++page) {
       if (page === this.state.activePage) {
-        pageNumbers.push(
-          <li key={keyTemplate + page} className="page-item active">
-            <a className="page-link" href={hrefLink + `${page}`}>
-              {page}
-            </a>
-          </li>
-        );
+        pageNumbers.push(this.renderPageTab(page, 'page-item active'));
         continue;
       }
-      pageNumbers.push(
-        <li key={keyTemplate + page} className="page-item">
-          <a
-            className="page-link"
-            href={hrefLink + `${page}`}
-            onClick={this.onPageNumberClick}
-          >
-            {page}
-          </a>
-        </li>
-      );
+      pageNumbers.push(this.renderPageTab(page, 'page-item'));
     }
     return pageNumbers;
   };
